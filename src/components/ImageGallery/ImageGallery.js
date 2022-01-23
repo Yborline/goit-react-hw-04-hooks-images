@@ -50,14 +50,17 @@ export default function ImageGallery({imgName , pageApp}) {
 
 
   useEffect(() => {
-     
     if (page > 1) {
       api.fetchImages(imgName, page).then((img) => {
         setImages([...images, ...img.hits])
-        setStatus("resolved")
-      }
-      )};
-      if (page !== 1) { scrollToBottom() }
+        setTimeout(() => {
+               scrollToBottom()  
+               },400)  
+      })
+      
+               setStatus("resolved")
+    };
+
   }
     , [ page])
   
