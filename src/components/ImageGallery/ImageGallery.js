@@ -5,9 +5,9 @@ import Loader from "../Loader/Loader";
 import Modal from "../Modal/Modal";
 import s from "../ImageGallery/ImageGallery.module.css";
 import api from "../../api/api";
-import PropTypes from "prop-types";
 
-export default function ImageGallery({imgName , pageApp}) {
+
+export default function ImageGallery({imgName , pageSearch}) {
   const [error] = useState("")
   const [showModal, setShowModal] = useState(false)
   const [largeImage, setLargeImage] = useState("")
@@ -32,49 +32,32 @@ export default function ImageGallery({imgName , pageApp}) {
       setLargeImage('')
       setAlt('')
   }
-  
-  
 
   useEffect(() => {
     if (!imgName) { return }
  setStatus("pending")
-      setPage(1)
     setImages([])
-    api.fetchImages(imgName, page).then((img) => {
+    api.fetchImages(imgName, pageSearch).then((img) => {
         setImages([...img.hits])
         setStatus("resolved")
-      }
-      );
-    }
-     , [imgName])
-
+      });
+}, [imgName])
 
   useEffect(() => {
     if (page > 1) {
+       setStatus("pending")
       api.fetchImages(imgName, page).then((img) => {
         setImages([...images, ...img.hits])
         setTimeout(() => {
-               scrollToBottom()  
-               },400)  
-      })
-      
-               setStatus("resolved")
-    };
-
-  }
-    , [ page])
+               scrollToBottom()},400)})
+               setStatus("resolved")};
+  }, [ page])
   
-
-
-
-
   const openModal = ({ alt, largeURL }) => {
     setShowModal({ showModal })
       setLargeImage(largeURL)
       setAlt(alt)
   }
-
-
 
     if (status === "idle") {
       return <div className={s.text}>Введите название </div>;
@@ -84,11 +67,9 @@ export default function ImageGallery({imgName , pageApp}) {
     return <Loader />
   }
 
-
     if (status === "rejected") {
       return <h1 className={s.text}>{error.message}</h1>;
     }
-
 
       if (status === "pending" || status === "resolved"  ) {
       return (
@@ -119,43 +100,4 @@ export default function ImageGallery({imgName , pageApp}) {
           ) : ''}
         </div>
       );
-  } 
-  
-
-  }
-  ImageGallery.propTypes = {
-    pageApp: PropTypes.number.isRequired,
-  };
-
-
-// const KEY = "24295658-d33a4cb7a7ba959c48fb9a807";
-
-//     this.setState({ status: "pending" });
-//     fetch(
-//       `https://pixabay.com/api/?key=${KEY}&q=${nextName}&page=${page}&image_type=photo&per_page=${numberImage}`
-//     )
-//       .then((response) => {
-//         if (!response.ok) {
-//           return Promise.reject(
-//             new Error(`Нет картинки с именем ${nextName}`)
-//           );
-//         }
-
-//         return response.json();
-//       })
-//         .then((newImages) =>{
-//             if (newImages === this.state.images) {
-//                  this.setState({
-//           images: [...newImages.hits],
-//           status: "resolved",
-//         })
-
-//           }
-//         this.setState({
-//           images: [...this.state.images, ...newImages.hits],
-//           status: "resolved",
-//         })}
-//       ).catch = (error) => {
-//       this.setState({ error: error.message, status: "rejected" });
-//       if (this.page !== 1) this.scrollToBottom();
-//     };
+  }}

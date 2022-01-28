@@ -6,12 +6,12 @@ import s from "./App.css";
 export default function App() {
   
   const [imgName, setImgName] = useState('')
-  const [page , setPage] = useState(1)
+  const [pageApp , setPageApp] = useState(1)
 
     return (
       <div className={s.body}>
-        <Searchbar pageSearch={setPage} onSubmit={setImgName} />
-        <ImageGallery pageApp={page} imgName={imgName} />
+        <Searchbar pageSearch={setPageApp} onSubmit={setImgName} />
+        <ImageGallery  pageSearch={pageApp}  imgName={imgName} />
       </div>
     );
   }
