@@ -7,12 +7,11 @@ import s from "../ImageGallery/ImageGallery.module.css";
 import api from "../../api/api";
 
 
-export default function ImageGallery({imgName , pageSearch}) {
+export default function ImageGallery({imgName , pageSearch,setSearch}) {
   const [error] = useState("")
   const [showModal, setShowModal] = useState(false)
   const [largeImage, setLargeImage] = useState("")
   const [alt, setAlt] = useState('')
-  const [page, setPage] = useState(1)
   const [images, setImages] = useState(false)
   const [status, setStatus] = useState("idle")
 
@@ -24,7 +23,7 @@ export default function ImageGallery({imgName , pageSearch}) {
   };
 
   const loadNextPage = () => {
-    setPage(state =>state + 1 )
+    setSearch(state =>state + 1 )
   };
 
   const closeModal = () => {
@@ -32,26 +31,30 @@ export default function ImageGallery({imgName , pageSearch}) {
       setLargeImage('')
       setAlt('')
   }
+  
 
   useEffect(() => {
+
     if (!imgName) { return }
- setStatus("pending")
+    if ( pageSearch === 1 ){
+    setStatus("pending")
+
     setImages([])
     api.fetchImages(imgName, pageSearch).then((img) => {
         setImages([...img.hits])
         setStatus("resolved")
       });
-}, [imgName])
+}}, [imgName])
 
   useEffect(() => {
-    if (page > 1) {
+    if (pageSearch > 1) {
        setStatus("pending")
-      api.fetchImages(imgName, page).then((img) => {
+      api.fetchImages(imgName, pageSearch).then((img) => {
         setImages([...images, ...img.hits])
         setTimeout(() => {
                scrollToBottom()},400)})
                setStatus("resolved")};
-  }, [ page])
+  }, [ pageSearch])
   
   const openModal = ({ alt, largeURL }) => {
     setShowModal({ showModal })

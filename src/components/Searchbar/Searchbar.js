@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 
 export default function Searchbar({onSubmit ,pageSearch}) {
   const [nameImg, setNameImg] = useState("")
-  const [page] = useState(1)
+
 
 const  changeInput = (event) => {
     const { value } = event.target;
@@ -19,9 +19,10 @@ const  handleSubmit = (event) => {
       alert("Введите название");
       return;
     }
-    onSubmit(nameImg);
-    pageSearch(page);
+  pageSearch(1);
      setNameImg('')
+    onSubmit(nameImg);
+ 
   };
 
     return (

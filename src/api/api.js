@@ -13,7 +13,6 @@ async function fetchImages(query, page) {
         new Error(`No results were found for your search "${query}"`)
       );
     }
-
     const images = await unparsedImages.json();
     return images;
   } catch (error) {

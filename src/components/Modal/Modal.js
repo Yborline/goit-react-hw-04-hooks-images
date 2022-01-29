@@ -6,16 +6,12 @@ import PropTypes from "prop-types";
 const modalRoot = document.querySelector("#modal-root");
 
 export default function  Modal ({onClose, alt, largeImage}){
-  
 
   useEffect(() => {
     window.addEventListener("keydown", handleKeyDown);
-   
     return (() => {
       window.removeEventListener("keydown", handleKeyDown);
-    
-    }
-    )
+    })
 })
   const handleKeyDown = (event) => {
     if (event.code === "Escape") {
